@@ -187,5 +187,14 @@ module \$lut (A, Y);
             wire _TECHMAP_FAIL_ = 1;
         end
     endgenerate
+       
 endmodule
 `endif
+
+module LUT16 (input [15:0] I, output O);
+    parameter [65535:0] INIT = 65536'b0;
+    assign O = INIT[{I[15], I[14], I[13], I[12],
+                     I[11], I[10], I[9],  I[8],
+                     I[7],  I[6],  I[5],  I[4],
+                     I[3],  I[2],  I[1],  I[0]}];
+endmodule

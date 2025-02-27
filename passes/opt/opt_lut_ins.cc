@@ -58,7 +58,7 @@ struct OptLutInsPass : public Pass {
 		}
 		extra_args(args, argidx, design);
 
-		if (techname != "" && techname != "xilinx" && techname != "lattice" && techname != "ecp5" && techname != "gowin")
+		if (techname != "" && techname != "xilinx" && techname != "lattice" && techname != "ecp5" && techname != "gowin" && techname != "ozixe")
 			log_cmd_error("Unsupported technology: '%s'\n", techname.c_str());
 
 		for (auto module : design->selected_modules())
@@ -192,6 +192,54 @@ struct OptLutInsPass : public Pass {
 							if (swz >= 0)
 								swz += extra;
 					}
+				} else if (techname == "ozixe") {
+					// On veut forcer une LUT16
+					int orig_size = GetSize(new_inputs);
+					int target_size = 16;
+					if (orig_size < target_size) {
+						int extra = target_size - orig_size;
+						for (int i = 0; i < extra; i++)
+							new_inputs.push_back(State::S0);
+					}
+					// Recalculer la LUT pour 16 entrées.
+					Const new_lut_ozixe(0, 1 << target_size); // 2^16 bits
+					// On se base sur la constante 'lut' d'origine qui a 2^(nombre d'entrées initiales) bits.
+					// Si orig_size == 0, on se met à 0 par défaut.
+					for (int i = 0; i < GetSize(new_lut_ozixe); i++) {
+						int lidx = 0;
+						// Pour chaque entrée d'origine (avant padding)
+						for (int j = 0; j < orig_size; j++) {
+							int bit;
+							// Utiliser la valeur du swizzle pour déterminer la position dans 'i'
+							if (swizzle[j] == -2)
+								bit = 1;
+							else if (swizzle[j] == -1)
+								bit = 0;
+							else
+								bit = (i >> swizzle[j]) & 1;
+							lidx |= bit << j;
+						}
+						// Pour les indices supérieurs (du padding), on considère que c'est toujours 0.
+						// Si orig_size > 0, on prend le bit correspondant dans 'lut'
+						int orig_range = (orig_size > 0) ? (1 << orig_size) : 1;
+						new_lut_ozixe.bits()[i] = lut[lidx % orig_range];
+					}
+					// Mettre à jour la cellule : forcer le type LUT16, param INIT et ports I0..I15.
+					cell->type = ID(LUT16);
+					cell->setParam(ID(INIT), new_lut_ozixe);
+					// Désactiver tous les anciens ports I*
+					for (int i = 0; i < 16; i++) {
+						cell->unsetPort(stringf("\\I%d", i));
+					}
+					// Réaffecter les ports pour les 16 entrées (les entrées supplémentaires sont S0).
+					for (int i = 0; i < target_size; i++) {
+						SigSpec port = (i < GetSize(new_inputs))
+    					? SigSpec(new_inputs[i])   // on force la conversion en SigSpec
+    					: SigSpec(State::S0);
+						cell->setPort(stringf("\\I%d", i), port);
+					}
+					// Si un paramètre WIDTH existe, le définir à 16.
+					cell->setParam(ID(WIDTH), Const(16));
 				}
 				if (techname == "gowin") {
 					// Pad the LUT to 1 input, adding consts from the front.
