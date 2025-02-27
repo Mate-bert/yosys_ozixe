@@ -192,7 +192,9 @@ struct OptLutInsPass : public Pass {
 							if (swz >= 0)
 								swz += extra;
 					}
-				} else if (techname == "ozixe") {
+				} 
+				if (techname == "ozixe") {
+					log("Conversion en LUT16!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 					// On veut forcer une LUT16
 					int orig_size = GetSize(new_inputs);
 					int target_size = 16;
