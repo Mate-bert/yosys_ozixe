@@ -376,6 +376,7 @@
 			 // Exécuter opt_lut_ins pour forcer l'utilisation de LUT16 dans le netlist
 			 run("opt_lut_ins -tech ozixe");
 			 run("clean");
+			 run("proc");
 		 }
  
 		 if (check_label("check")) {
