@@ -348,7 +348,7 @@
 			 if (abc2 || help_mode)
 				 run("abc", "(only if -abc2)");
 			 if (!asyncprld || help_mode)
-				 run("techmap -map +/ozixe/latches_map_ozixe.v", "(skip if -asyncprld)");
+				 run("techmap -map +/ozixe/latches_map.v", "(skip if -asyncprld)");
 			 if (abc9) {
 				 std::string abc9_opts;
 				 abc9_opts += " -W 300";
