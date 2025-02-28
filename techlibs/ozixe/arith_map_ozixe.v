@@ -1,90 +1,85 @@
 /*
- *  yosys -- Yosys Open SYnthesis Suite
- *
- *  Copyright (C) 2012  Claire Xenia Wolf <claire@yosyshq.com>
- *  Copyright (C) 2018  gatecat <gatecat@ds0.me>
- *
- *  Permission to use, copy, modify, and/or distribute this software for any
- *  purpose with or without fee is hereby granted, provided that the above
- *  copyright notice and this permission notice appear in all copies.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- *  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- *  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- *  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- *  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- *  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- *  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- *
- */
-
+	CRÉATION DE OZIXE
+	Auteur : Bertolelli Mateo et son amie le C
+*/
 (* techmap_celltype = "$alu" *)
-module _80_ccu2d_alu (A, B, CI, BI, X, Y, CO);
-	parameter A_SIGNED = 0;
-	parameter B_SIGNED = 0;
-	parameter A_WIDTH = 1;
-	parameter B_WIDTH = 1;
-	parameter Y_WIDTH = 1;
+module full_adder_lut16 (
+    input  A,
+    input  B,
+    input  Cin,
+    output Sum,
+    output Cout
+);
+    // On va créer un signal de 4 bits pour la LUT, où l'on place nos 3 entrées et une constante 0.
+    // Par exemple, on peut définir : I = { 1'b0, Cin, B, A }.
+    wire [3:0] I = {1'b0, Cin, B, A};
 
-	(* force_downto *)
-	input [A_WIDTH-1:0] A;
-	(* force_downto *)
-	input [B_WIDTH-1:0] B;
-	(* force_downto *)
-	output [Y_WIDTH-1:0] X, Y;
+    // On doit construire une entrée de 16 bits pour la LUT16 du package,
+    // en plaçant nos 4 bits dans les 4 bits de poids faibles et en
+    // complétant le reste par des zéros.
+    wire [15:0] LUT_input = {12'b0, I};
 
-	input CI, BI;
-	(* force_downto *)
-	output [Y_WIDTH-1:0] CO;
+    // La table de vérité pour Sum (full adder/additionneur) pour les 8 premiers indices :
+    // A  B  Cin | Sum  Cout
+    // 0  0  0  :   0    0   -> 0
+    // 0  0  1  :   1    0   -> 1
+    // 0  1  0  :   1    0   -> 1
+    // 0  1  1  :   0    1   -> 0
+    // 1  0  0  :   1    0   -> 1
+    // 1  0  1  :   0    1   -> 0
+    // 1  1  0  :   0    1   -> 0
+    // 1  1  1  :   1    1   -> 1
+    //
+    // Pour la LUT16, on définit le paramètre INIT sur 16 bits.
+    // Pour Sum, on pourra par exemple étendre ce motif aux 16 cases (les 8
+    // cases supérieures seront identiques).
+    localparam [15:0] INIT_SUM = 16'b0110100101101001; 
 
-	wire _TECHMAP_FAIL_ = Y_WIDTH <= 4;
+    // Pour Cout, la table (pour les 8 premières cases) est :
+    // 0:0, 1:0, 2:0, 3:1, 4:0, 5:1, 6:1, 7:1.
+    localparam [15:0] INIT_COUT = 16'b1110100011101000; 
 
-	(* force_downto *)
-	wire [Y_WIDTH-1:0] A_buf, B_buf;
-	\$pos #(.A_SIGNED(A_SIGNED), .A_WIDTH(A_WIDTH), .Y_WIDTH(Y_WIDTH)) A_conv (.A(A), .Y(A_buf));
-	\$pos #(.A_SIGNED(B_SIGNED), .A_WIDTH(B_WIDTH), .Y_WIDTH(Y_WIDTH)) B_conv (.A(B), .Y(B_buf));
-
-	function integer round_up2;
-		input integer N;
-		begin
-			round_up2 = ((N + 1) / 2) * 2;
-		end
-	endfunction
-
-	localparam Y_WIDTH2 = round_up2(Y_WIDTH);
-
-	(* force_downto *)
-	wire [Y_WIDTH2-1:0] AA = A_buf;
-	(* force_downto *)
-	wire [Y_WIDTH2-1:0] BB = BI ? ~B_buf : B_buf;
-	(* force_downto *)
-	wire [Y_WIDTH2-1:0] BX = B_buf;
-	(* force_downto *)
-	wire [Y_WIDTH2-1:0] C = {CO, CI};
-	(* force_downto *)
-	wire [Y_WIDTH2-1:0] FCO, Y1;
-
-	genvar i;
-	generate for (i = 0; i < Y_WIDTH2; i = i + 2) begin:slice
-		CCU2D #(
-			.INIT0(16'b0101_1010_1001_0110),
-			.INIT1(16'b0101_1010_1001_0110),
-			.INJECT1_0("NO"),
-			.INJECT1_1("NO")
-		) ccu2d_i (
-			.CIN(C[i]),
-			.A0(AA[i]), .B0(BX[i]), .C0(BI), .D0(1'b0),
-			.A1(AA[i+1]), .B1(BX[i+1]), .C1(BI), .D1(1'b0),
-			.S0(Y[i]), .S1(Y1[i]),
-			.COUT(FCO[i])
-		);
-
-		assign CO[i] = (AA[i] && BB[i]) || (C[i] && (AA[i] || BB[i]));
-		if (i+1 < Y_WIDTH) begin
-			assign CO[i+1] = FCO[i];
-			assign Y[i+1] = Y1[i];
-		end
-	end endgenerate
-
-	assign X = AA ^ BB;
+    // On instancie deux LUT16 :
+    LUT16 lut_sum (.I(LUT_input), .O(Sum));
+    defparam lut_sum.INIT = INIT_SUM;
+    
+    LUT16 lut_cout (.I(LUT_input), .O(Cout));
+    defparam lut_cout.INIT = INIT_COUT;
+    
 endmodule
+
+module adder_16bit (
+    input  [15:0] A,
+    input  [15:0] B,
+    input         Cin,
+    output [15:0] Sum,
+    output        Cout
+);
+    wire [15:0] carry;
+    genvar i;
+    generate
+        for (i = 0; i < 16; i = i + 1) begin: full_adder_array
+            if (i == 0) begin
+                full_adder_lut16 fa (
+                    .A(A[i]),
+                    .B(B[i]),
+                    .Cin(Cin),
+                    .Sum(Sum[i]),
+                    .Cout(carry[i])
+                );
+            end else begin
+                full_adder_lut16 fa (
+                    .A(A[i]),
+                    .B(B[i]),
+                    .Cin(carry[i-1]),
+                    .Sum(Sum[i]),
+                    .Cout(carry[i])
+                );
+            end
+        end
+    endgenerate
+    assign Cout = carry[15];
+endmodule
+
+
+

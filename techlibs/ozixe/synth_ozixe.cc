@@ -15,6 +15,9 @@
  *  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  *  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
+ * 
+ * 	Fichier de synthèse custom inspiré des travaux de Claire X
+ * 	Auteur : Mateo Bertolelli
  */
 
  #include "kernel/register.h"
@@ -25,34 +28,33 @@
  USING_YOSYS_NAMESPACE
  PRIVATE_NAMESPACE_BEGIN
  
- struct SynthozixePass : public ScriptPass
- {
-	 SynthozixePass() : ScriptPass("synth_ozixe", "synthesis for ozixe FPGAs") { }
+ struct SynthozixePass : public ScriptPass {
+	 SynthozixePass() : ScriptPass("synth_ozixe", "synthesis for ozixe FPGAs (custom flow using LUT16)") { }
  
-	 void on_register() override
-	 {
-		 // Optionnel : Ajuster un param ABC9 par défaut
+	 void on_register() override {
+		 // Paramètre ABC9 par défaut (si utilisé)
 		 RTLIL::constpad["synth_ozixe.abc9.W"] = "300";
 	 }
  
-	 void help() override
-	 {
+	 void help() override {
 		 log("\n");
 		 log("    synth_ozixe [options]\n");
 		 log("\n");
-		 log("This command runs synthesis for ozixe FPGAs.\n");
+		 log("This command runs synthesis for ozixe FPGAs using a custom flow that converts\n");
+		 log("all logic into LUT16 cells. Les primitives FPGA spécifiques (RAM, IO, etc.)\n");
+		 log("ne sont pas utilisées.\n");
 		 log("\n");
 		 log("    -top <module>\n");
 		 log("        use the specified module as top module\n");
 		 log("\n");
 		 log("    -edif <file>\n");
-		 log("        write the design to the specified EDIF file.\n");
+		 log("        write the design to the specified EDIF file\n");
 		 log("\n");
 		 log("    -json <file>\n");
-		 log("        write the design to the specified JSON file.\n");
+		 log("        write the design to the specified JSON file\n");
 		 log("\n");
 		 log("    -run <from_label>:<to_label>\n");
-		 log("        only run the commands between the labels (see below).\n");
+		 log("        only run the commands between the given labels\n");
 		 log("\n");
 		 log("    -noflatten\n");
 		 log("        do not flatten design before synthesis\n");
@@ -64,7 +66,7 @@
 		 log("        run 'abc' with '-dff -D 1' options\n");
 		 log("\n");
 		 log("    -noccu2\n");
-		 log("        do not use CCU2 cells in output netlist (carry chain)\n");
+		 log("        do not use CCU2 cells in output netlist\n");
 		 log("\n");
 		 log("    -nodffe\n");
 		 log("        do not use flipflops with CE in output netlist\n");
@@ -85,7 +87,7 @@
 		 log("        use async PRLD mode to implement ALDFF (EXPERIMENTAL)\n");
 		 log("\n");
 		 log("    -abc2\n");
-		 log("        run two passes of 'abc' for slightly improved logic density\n");
+		 log("        run two passes of 'abc' for improved logic density\n");
 		 log("\n");
 		 log("    -abc9\n");
 		 log("        use new ABC9 flow (EXPERIMENTAL)\n");
@@ -97,7 +99,7 @@
 		 log("        do not map multipliers to DSP blocks\n");
 		 log("\n");
 		 log("    -no-rw-check\n");
-		 log("        read/write collisions yield don't-care.\n");
+		 log("        read/write collisions yield don't-care\n");
 		 log("\n");
 		 log("    -cmp2softlogic\n");
 		 log("        implement constant comparisons in soft logic\n");
@@ -112,8 +114,7 @@
 	 bool noccu2, nodffe, nobram, nolutram, nowidelut, asyncprld, flatten, dff, retime, abc2, abc9, iopad, nodsp, no_rw_check;
 	 bool cmp2softlogic;
  
-	 void clear_flags() override
-	 {
+	 void clear_flags() override {
 		 top_opt      = "-auto-top";
 		 edif_file    = "";
 		 json_file    = "";
@@ -134,15 +135,13 @@
 		 cmp2softlogic = false;
 	 }
  
-	 void execute(std::vector<std::string> args, RTLIL::Design *design) override
-	 {
+	 void execute(std::vector<std::string> args, RTLIL::Design *design) override {
 		 string run_from, run_to;
 		 bool force_widelut = false;
 		 clear_flags();
  
 		 size_t argidx;
-		 for (argidx = 1; argidx < args.size(); argidx++)
-		 {
+		 for (argidx = 1; argidx < args.size(); argidx++) {
 			 if (args[argidx] == "-top" && argidx+1 < args.size()) {
 				 top_opt = "-top " + args[++argidx];
 				 continue;
@@ -237,7 +236,6 @@
 		 }
 		 extra_args(args, argidx, design);
  
-		 // Vérification basique
 		 if (!design->full_selection())
 			 log_cmd_error("This command only operates on fully selected designs!\n");
  
@@ -247,30 +245,26 @@
 		 log_header(design, "Executing SYNTH_OZIXE pass.\n");
 		 log_push();
  
-		 // Lancer le script
+		 // Lancer le script (exécution des étapes)
 		 run_script(design, run_from, run_to);
  
 		 log_pop();
 	 }
  
-	 // Voici la suite de passes exécutées
-	 void script() override
-	 {
+	 void script() override {
 		 std::string no_rw_check_opt = "";
 		 if (no_rw_check)
 			 no_rw_check_opt = " -no-rw-check";
 		 if (help_mode)
 			 no_rw_check_opt = " [-no-rw-check]";
  
-		 if (check_label("begin"))
-		 {
-			 // Lire les fichiers ozixe de base
-			 run("read_verilog -lib -specify +/ozixe/cells_sim_ozixe.v +/ozixe/cells_bb_ozixe.v");
+		 // NE PAS charger les primitives spécifiques (cells_sim et cells_bb)
+		 if (check_label("begin")) {
+			 // Pour un flow custom, on n'inclut pas les fichiers de primitives
 			 run(stringf("hierarchy -check %s", help_mode ? "-top <top>" : top_opt.c_str()));
 		 }
  
-		 if (check_label("coarse"))
-		 {
+		 if (check_label("coarse")) {
 			 run("proc");
 			 if (flatten || help_mode)
 				 run("flatten");
@@ -292,8 +286,7 @@
 			 run("opt_expr");
 			 run("opt_clean");
 			 if (!nodsp) {
-				 // Ex. : map dsp si besoin
-				 // run("techmap -map +/mul2dsp.v -map +/ozixe/dsp_map.v ...");
+				 // On ignore le mapping DSP puisque nous n'utilisons pas de primitives DSP custom
 			 }
 			 run("alumacc");
 			 run("opt");
@@ -301,22 +294,17 @@
 			 run("opt_clean");
 		 }
  
-		 if (check_label("map_ram"))
-		 {
-			 // Pour brams, lutrams, etc.
-			 run("memory_libmap -lib +/ozixe/lutrams.txt -lib +/ozixe/brams_ozixe.txt");
-			 run("techmap -map +/ozixe/lutrams_map.v -map +/ozixe/brams_map_ozixe.v");
+		 if (check_label("map_ram")) {
+			 // On ignore le mapping des RAM (pas de primitives de RAM custom)
 		 }
  
-		 if (check_label("map_ffram"))
-		 {
+		 if (check_label("map_ffram")) {
 			 run("opt -fast -mux_undef -undriven -fine");
 			 run("memory_map");
 			 run("opt -undriven -fine -mux_undef");
 		 }
  
-		 if (check_label("map_gates"))
-		 {
+		 if (check_label("map_gates")) {
 			 if (noccu2)
 				 run("techmap");
 			 else
@@ -329,8 +317,7 @@
 				 run("abc -dff -D 1", "(only if -retime)");
 		 }
  
-		 if (check_label("map_ffs"))
-		 {
+		 if (check_label("map_ffs")) {
 			 run("opt_clean");
 			 std::string dfflegalize_args = " -cell $_DFF_?_ 01 -cell $_DFF_?P?_ r -cell $_SDFF_?P?_ r";
 			 if (help_mode) {
@@ -349,24 +336,22 @@
 			 run("opt_merge");
 			 if (abc9 && dff)
 				 run("zinit -all w:* t:$_DFF_?_ t:$_DFFE_??_ t:$_SDFF*");
-			 // Mapper les DFF sur ozixe
-			 run("techmap -D NO_LUT -map +/ozixe/cells_map.v");
+			 // Mapper les DFF sur vos cellules custom
+			 run("techmap -D NO_LUT -map +/ozixe/cells_map_ozixe.v");
 			 run("opt_expr -undriven -mux_undef");
 			 run("simplemap");
-			 run("ozixe_gsr"); // s'il existe
+			 run("ozixe_gsr");
 			 run("opt_clean");
 		 }
  
-		 if (check_label("map_luts"))
-		 {
+		 if (check_label("map_luts")) {
 			 if (abc2 || help_mode)
 				 run("abc", "(only if -abc2)");
 			 if (!asyncprld || help_mode)
-				 run("techmap -map +/ozixe/latches_map.v", "(skip if -asyncprld)");
- 
+				 run("techmap -map +/ozixe/latches_map_ozixe.v", "(skip if -asyncprld)");
 			 if (abc9) {
 				 std::string abc9_opts;
-				 abc9_opts += " -W 300"; // param par défaut
+				 abc9_opts += " -W 300";
 				 if (nowidelut)
 					 abc9_opts += " -maxlut 4";
 				 if (dff)
@@ -385,17 +370,15 @@
 			 run("clean");
 		 }
  
-		 if (check_label("map_cells"))
-		 {
-			 // On applique un mapping final sur cells_map.v
-			 run("techmap -map +/ozixe/cells_map.v");
-			 // On appelle ensuite notre pass opt_lut_ins pour ozixe
+		 if (check_label("map_cells")) {
+			 // Appliquer le mapping final sur vos cellules custom (par ex. LUT16)
+			 run("techmap -map +/ozixe/cells_map_ozixe.v");
+			 // Exécuter opt_lut_ins pour forcer l'utilisation de LUT16 dans le netlist
 			 run("opt_lut_ins -tech ozixe");
 			 run("clean");
 		 }
  
-		 if (check_label("check"))
-		 {
+		 if (check_label("check")) {
 			 run("autoname");
 			 run("hierarchy -check");
 			 run("stat");
@@ -403,14 +386,12 @@
 			 run("blackbox =A:whitebox");
 		 }
  
-		 if (check_label("edif"))
-		 {
+		 if (check_label("edif")) {
 			 if (!edif_file.empty() || help_mode)
 				 run(stringf("write_edif %s", help_mode ? "<file-name>" : edif_file.c_str()));
 		 }
  
-		 if (check_label("json"))
-		 {
+		 if (check_label("json")) {
 			 if (!json_file.empty() || help_mode)
 				 run(stringf("write_json %s", help_mode ? "<file-name>" : json_file.c_str()));
 		 }
