@@ -214,33 +214,519 @@ endmodule
 `ifndef NO_LUT
 module $lut (A, Y);
     parameter WIDTH = 0;       // Nombre d'entrées effectives (1 à 16)
-    parameter [0:(1<<WIDTH)-1] LUT = 0;  // Valeur d'INIT originale sur 2^(WIDTH) bits
+    parameter [0:(1<<WIDTH)-1] LUT = 0;  // Valeur d'INIT originale sur 2^(WIDTH) bits 
+    //parameter LUT = 0;
 
     (* force_downto *)
-    input [WIDTH-1:0] A;
+    input [WIDTH-1:0] A; 
     output Y;
 
+    generate
+        if (WIDTH == 1) begin
+            assign Y = ~A[0];
+        end else
+        if (WIDTH == 2) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(A[0]), .I1(A[1]), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 3) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(0));
+        end else
+        if (WIDTH == 4) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+        end else
+        if (WIDTH == 5) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(0), .I3(0)); 
+        end else
+        if (WIDTH == 6) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 7) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 8) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 9) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(f2), .I3(0));
+        end else
+        if (WIDTH == 10) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(f2), .I3(0));
+        end else
+        if (WIDTH == 11) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(f2), .I3(0));
+        end else
+        if (WIDTH == 12) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(f2), .I3(0));
+        end else
+        if (WIDTH == 13) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+        end else
+        if (WIDTH == 14) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+        end else
+        if (WIDTH == 15) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+        end else
+        if (WIDTH == 16) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+        end else
+        if (WIDTH == 17) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 18) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 19) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 20) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 21) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 22) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 23) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 24) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 25) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d2),
+            .I0(A[0]), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(d2), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 26) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d2),
+            .I0(A[0]), .I1(A[1]), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(d2), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 27) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(d2), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 28) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(d2), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 29) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d3),
+            .I0(A[0]), .I1(0), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(d2), .I3(d3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 30) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d3),
+            .I0(A[0]), .I1(A[1]), .I2(0), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(d2), .I3(d3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 31) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(0));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(d2), .I3(d3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+        if (WIDTH == 32) begin
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d0),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d1),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d2),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(d3),
+            .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g0),
+            .I0(f0), .I1(f1), .I2(f2), .I3(f3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(g1),
+            .I0(d0), .I1(d1), .I2(d2), .I3(d3));
+            LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(Y),
+            .I0(g0), .I1(g1), .I2(0), .I3(0));
+        end else
+
+    endgenerate
+
+    /*
     // Compléter à 16 bits : placer les bits d'entrée dans les bits de poids faibles
-    // et compléter le reste par des zéros en MSB.
-    wire [15:0] I = { {(16-WIDTH){1'b0}}, A };
+    wire [15:0] I = { {(16-WIDTH){1'b0}}, A }; // Concaténation (si A a une largeur de 4 alors wire sera "0000 0000 0000 "4 bits de A")
 
     // Étendre la table de vérité à 2^16 bits en répétant le motif original.
-    localparam integer REPL = (1 << (16 - WIDTH));
+    localparam integer REPL = (1 << (16 - WIDTH)); // on réplique l'entrée sur WIDTH bits sur tous les bits restant 
     localparam [65535:0] INIT_EXT = { REPL { LUT } };
 
-    // Instancier la LUT16 générique
+    // Instancier le module LUT16 
     LUT16 lut16_inst (
         .I(I),
         .O(Y)
     );
-    defparam lut16_inst.INIT = INIT_EXT;
+    defparam lut16_inst.INIT = INIT_EXT; */
 endmodule
 `endif
 
-module LUT16 (input [15:0] I, output O);
-    parameter [65535:0] INIT = 65536'b0;
-    assign O = INIT[{I[15], I[14], I[13], I[12],
-                     I[11], I[10], I[9],  I[8],
-                     I[7],  I[6],  I[5],  I[4],
-                     I[3],  I[2],  I[1],  I[0]}];
+//module LUT16 (input [15:0] I, output O);
+//    parameter [65535:0] INIT = 65536'b0;
+//    assign O = INIT[{I[15], I[14], I[13], I[12],
+//                     I[11], I[10], I[9],  I[8],
+//                     I[7],  I[6],  I[5],  I[4],
+//                     I[3],  I[2],  I[1],  I[0]}];
+//endmodule
+
+module LUT4 (input [3:0] I, output O);
+    parameter [15:0] INIT = 16'b0;
+    assign O = INIT[{I[3], I[2], I[1], I[0]}];
+endmodule
+
+module LUT2 (input [1:0] I, output O);
+    parameter [3:0] INIT = 3'b0;
+    assign O = INIT[{I[1], I[0]}];
 endmodule
