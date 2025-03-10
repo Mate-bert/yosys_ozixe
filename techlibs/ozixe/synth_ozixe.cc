@@ -337,6 +337,7 @@
 			 if (abc9 && dff)
 				 run("zinit -all w:* t:$_DFF_?_ t:$_DFFE_??_ t:$_SDFF*");
 			 // Mapper les DFF sur vos cellules custom
+			 run("read_verilog +/ozixe/ozixe_primitives.v");
 			 run("techmap -D NO_LUT -map +/ozixe/cells_map_ozixe.v");
 			 run("opt_expr -undriven -mux_undef");
 			 run("simplemap");
@@ -372,6 +373,7 @@
  
 		 if (check_label("map_cells")) {
 			 // Appliquer le mapping final sur vos cellules custom (par ex. LUT16)
+			 //run("read_verilog +/ozixe/ozixe_primitives.v");
 			 run("techmap -map +/ozixe/cells_map_ozixe.v");
 			 // Exécuter opt_lut_ins pour forcer l'utilisation de LUT16 dans le netlist
 			 run("opt_lut_ins -tech ozixe");

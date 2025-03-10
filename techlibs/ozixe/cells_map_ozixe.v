@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------------
 
 // Déclaration de votre flip‑flop générique OZIXE_FF
+(* techmap_cell, blackbox *)
 module OZIXE_FF (
     input  clk,
     input  rst,  // réinitialisation asynchrone active à 1
@@ -238,6 +239,7 @@ module $lut (A, Y);
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
         end else
         if (WIDTH == 5) begin
+            wire f0, f1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -246,6 +248,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(0), .I3(0)); 
         end else
         if (WIDTH == 6) begin
+            wire f0, f1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -254,6 +257,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(0), .I3(0));
         end else
         if (WIDTH == 7) begin
+            wire f0, f1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -262,6 +266,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(0), .I3(0));
         end else
         if (WIDTH == 8) begin
+            wire f0, f1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -270,6 +275,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(0), .I3(0));
         end else
         if (WIDTH == 9) begin
+            wire f0, f1, f2
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -280,6 +286,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(f2), .I3(0));
         end else
         if (WIDTH == 10) begin
+            wire f0, f1, f2
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -290,6 +297,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(f2), .I3(0));
         end else
         if (WIDTH == 11) begin
+            wire f0, f1, f2
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -300,6 +308,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(f2), .I3(0));
         end else
         if (WIDTH == 12) begin
+            wire f0, f1, f2
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -310,6 +319,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(f2), .I3(0));
         end else
         if (WIDTH == 13) begin
+            wire f0, f1, f2, f3
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -322,6 +332,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(f2), .I3(f3));
         end else
         if (WIDTH == 14) begin
+            wire f0, f1, f2, f3
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -334,6 +345,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(f2), .I3(f3));
         end else
         if (WIDTH == 15) begin
+            wire f0, f1, f2, f3
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -346,6 +358,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(f2), .I3(f3));
         end else
         if (WIDTH == 16) begin
+            wire f0, f1, f2, f3
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -358,6 +371,7 @@ module $lut (A, Y);
             .I0(f0), .I1(f1), .I2(f2), .I3(f3));
         end else
         if (WIDTH == 17) begin
+            wire f0, f1, f2, f3, d0, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -376,6 +390,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 18) begin
+            wire f0, f1, f2, f3, d0, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -394,6 +409,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 19) begin
+            wire f0, f1, f2, f3, d0, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -412,6 +428,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 20) begin
+            wire f0, f1, f2, f3, d0, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -430,6 +447,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 21) begin
+            wire f0, f1, f2, f3, d0, d1, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -450,6 +468,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 22) begin
+            wire f0, f1, f2, f3, d0, d1, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -470,6 +489,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 23) begin
+            wire f0, f1, f2, f3, d0, d1, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -490,6 +510,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 24) begin
+            wire f0, f1, f2, f3, d0, d1, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -510,6 +531,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 25) begin
+            wire f0, f1, f2, f3, d0, d1, d2, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -532,6 +554,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 26) begin
+            wire f0, f1, f2, f3, d0, d1, d2, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -554,6 +577,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 27) begin
+            wire f0, f1, f2, f3, d0, d1, d2, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -576,6 +600,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 28) begin
+            wire f0, f1, f2, f3, d0, d1, d2, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -598,6 +623,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 29) begin
+            wire f0, f1, f2, f3, d0, d1, d2, d3, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -622,6 +648,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 30) begin
+            wire f0, f1, f2, f3, d0, d1, d2, d3, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -646,6 +673,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 31) begin
+            wire f0, f1, f2, f3, d0, d1, d2, d3, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
@@ -670,6 +698,7 @@ module $lut (A, Y);
             .I0(g0), .I1(g1), .I2(0), .I3(0));
         end else
         if (WIDTH == 32) begin
+            wire f0, f1, f2, f3, d0, d1, d2, d3, g0, g1
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f0),
             .I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
             LUT4 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.O(f1),
