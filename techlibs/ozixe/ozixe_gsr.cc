@@ -81,6 +81,8 @@ struct ozixeGsrPass : public Pass {
 
 			for (auto cell : module->selected_cells())
 			{
+				if (cell->type == ID(OZIXE_FF))
+					continue;
 				if (!cell->hasParam(ID(GSR)) || cell->getParam(ID(GSR)).decode_string() != "AUTO")
 					continue;
 				
