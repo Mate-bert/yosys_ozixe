@@ -1,6 +1,5 @@
 
 OBJS += techlibs/ozixe/synth_ozixe.o
-OBJS += techlibs/ozixe/ozixe_gsr.o
 
 $(eval $(call add_share_file,share/ozixe,techlibs/ozixe/cells_ff.vh))
 $(eval $(call add_share_file,share/ozixe,techlibs/ozixe/cells_io.vh))

@@ -341,7 +341,6 @@
 			 run("techmap -D NO_LUT -map +/ozixe/cells_map_ozixe.v");
 			 run("opt_expr -undriven -mux_undef");
 			 run("simplemap");
-			 run("ozixe_gsr");
 			 run("opt_clean");
 		 }
  

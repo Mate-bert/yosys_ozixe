@@ -1,11 +1,19 @@
 (* keep *)
-module LUT4 (input [3:0] I, output O);
+module LUT4 (input I0, I1, I2, I3, output O);
     parameter [15:0] INIT = 16'b0;
-    assign O = INIT[{I[3], I[2], I[1], I[0]}];
+    assign O = INIT[{I3, I2, I1, I0}];
 endmodule
 
 (* keep *)
-module LUT2 (input [1:0] I, output O);
-    parameter [3:0] INIT = 3'b0;
-    assign O = INIT[{I[1], I[0]}];
+module OZIXE_FF (
+    input  clk,
+    input  rst,  // réinitialisation asynchrone active à 1
+    input  D,
+    output reg Q
+);
+    always @(posedge clk or posedge rst)
+        if (rst)
+            Q <= 1'b0;
+        else
+            Q <= D;
 endmodule
